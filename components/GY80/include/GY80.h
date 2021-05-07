@@ -8,7 +8,6 @@
 #ifndef GY80_H_
 #define GY80_H_
 
-
 #include "i2c.h"
 
 #define I2C_GY_MODULE I2C1
@@ -71,7 +70,6 @@ private:
 	bool WaitAccDataReady();
 	bool WaitMagDataReady();
 	bool DeviceConnected = false;
-
 
 public:
 	//Recebe os dados e calibrações

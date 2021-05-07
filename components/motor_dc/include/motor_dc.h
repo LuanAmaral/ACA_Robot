@@ -22,7 +22,7 @@ class motorDC
     private:
         int pin_foward;
         int pin_backward;
-        int maxVelocity;
+        int max_velocity;
         mcpwm_io_signals_t io_signals_foward;   
         mcpwm_io_signals_t io_signals_backward;
         mcpwm_generator_t gen_foward;

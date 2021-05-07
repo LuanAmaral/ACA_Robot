@@ -3,17 +3,20 @@
 #include "motor_dc.h"
 // #include "i2c.h"
 #include "GY80.h"
+#include "encoder.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/mcpwm.h"
 #include "soc/mcpwm_periph.h"
+#include "driver/gpio.h"
 
-#define PWMA 12U
-#define PWMB 13U
-#define I2C_DATA 2U
-#define I2C_CLOCK 14U
-#define I2C_FREQ 5000
+
+#define ENCODER_A (gpio_num_t)2
+#define ENCODER_B (gpio_num_t)14
+#define I2C_FREQ  (uint32_t)1000
+#define BLINK_GPIO (gpio_num_t)4
+
 
 #ifdef __cplusplus
 extern "C"
@@ -23,20 +26,20 @@ extern "C"
 #endif
 extern "C" void app_main()
 {
-    printf("Testing GY80...\n");
-    i2c i2c;
-    i2c.init(I2C_DATA, I2C_CLOCK,I2C_FREQ, I2C_NUM_0 );
-    GY80 gy80(i2c);
-    printf("Leitura:\tacc_x\tacc_y\tacc_z\tgyr_x\tgyr_y\tgyr_z ");
-    while (1)
+    gpio_reset_pin(BLINK_GPIO);
+    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(BLINK_GPIO, 0);
+    printf("Testing Encoder...\n");
+    encoder ky40 (ENCODER_A, ENCODER_B, 20, PCNT_CHANNEL_0, PCNT_UNIT_0);
+    float distancia_rad;
+    while(1)
     {
-        gy80.ReadAcc();
-        gy80.ReadGyr();
-        printf("\t%d\t%d\t%d\t%d\t%d\t%d", gy80.Imu.Acc.X,gy80.Imu.Acc.Y,gy80.Imu.Acc.Z,gy80.Imu.Gyr.X,gy80.Imu.Gyr.Y,gy80.Imu.Gyr.Z);
-        vTaskDelay(100/portTICK_PERIOD_MS);
-
-        
+        ky40.get_dist_angular_rad(&distancia_rad);
+        printf("%f\n", distancia_rad);
+        vTaskDelay(1000/portTICK_PERIOD_MS);
     }
+    
 
     
+
 }

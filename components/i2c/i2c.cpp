@@ -28,9 +28,11 @@ esp_err_t i2c::init(int data_pin, int clock_pin, uint32_t freq, i2c_port_t _port
     conf.sda_io_num = clock_pin;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
     conf.master.clk_speed = freq;
+    conf.clk_flags = 0;
+
 
     esp_err_t err = i2c_param_config(port, &conf);
-    if (err != ESP_OK)
+    if (err == ESP_FAIL)
     {
         return err;
     }

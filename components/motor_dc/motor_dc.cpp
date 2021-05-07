@@ -45,7 +45,7 @@ esp_err_t motorDC::init(mcpwm_unit_t _mcpwm_num, mcpwm_io_signals_t io_signal_A,
 
 esp_err_t motorDC::setMaxVelocity(float vel)
 {
-    maxVelocity = vel;
+    max_velocity = vel;
     return ESP_OK;
 }
 
@@ -59,11 +59,11 @@ esp_err_t motorDC::setVelocity(float vel)
     }
     if (vel > 0)
     { //foward
-        if (vel > maxVelocity)
+        if (vel > max_velocity)
         {
-            vel = maxVelocity;
+            vel = max_velocity;
         }
-        float duty_cycle = 100 * vel / maxVelocity;
+        float duty_cycle = 100 * vel / max_velocity;
         mcpwm_set_signal_low(mcpwm_num, timer_num, MCPWM_OPR_B);
         mcpwm_set_duty(mcpwm_num, timer_num, MCPWM_OPR_A, duty_cycle);
         mcpwm_set_duty_type(mcpwm_num, timer_num, MCPWM_OPR_A, MCPWM_DUTY_MODE_0);
@@ -72,11 +72,11 @@ esp_err_t motorDC::setVelocity(float vel)
     else
     { //backward
         vel = -vel;
-        if (vel < maxVelocity)
+        if (vel < max_velocity)
         {
-            vel = maxVelocity;
+            vel = max_velocity;
         }
-        float duty_cycle = 100 * vel / maxVelocity;
+        float duty_cycle = 100 * vel / max_velocity;
         mcpwm_set_signal_low(mcpwm_num, timer_num, MCPWM_OPR_A);
         mcpwm_set_duty(mcpwm_num, timer_num, MCPWM_OPR_B, duty_cycle);
         mcpwm_set_duty_type(mcpwm_num, timer_num, MCPWM_OPR_B, MCPWM_DUTY_MODE_0);
