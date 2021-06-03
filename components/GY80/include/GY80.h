@@ -8,7 +8,9 @@
 #ifndef GY80_H_
 #define GY80_H_
 
+#ifndef i2c_H_
 #include "i2c.h"
+#endif
 
 #define I2C_GY_MODULE I2C1
 

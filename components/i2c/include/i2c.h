@@ -15,12 +15,6 @@
 #include "driver/i2c.h"
 #include "esp_attr.h"
 
-#define I2C_MASTER_SCL_IO 14 /*!< gpio number for i2c slave clock */
-#define I2C_MASTER_SDA_IO 15 /*!< gpio number for i2c slave data */
-#define I2C_ACK  (i2c_ack_type_t)0X01      /*!< I2C master will check ack flom slave*/
-#define I2C_NACK (i2c_ack_type_t)0X00      /*!< I2C master will not check ack flom slave*/
-#define I2C_MASTER_FREQ_HZ 100
-
 class i2c
 {
     private:

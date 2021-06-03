@@ -1,9 +1,10 @@
 #include <stdio.h>
 
-#include "motor_dc.h"
+// #include "motor_dc.h"
 // #include "i2c.h"
 #include "GY80.h"
-#include "encoder.h"
+// #include "MPU6050.h"
+// #include "encoder.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -11,12 +12,11 @@
 #include "soc/mcpwm_periph.h"
 #include "driver/gpio.h"
 
+#define DATA_I2C   (gpio_num_t)21
+#define CLOCK_I2C  (gpio_num_t)22
+#define FREQ_I2C    500000
 
-#define ENCODER_A (gpio_num_t)2
-#define ENCODER_B (gpio_num_t)14
-#define I2C_FREQ  (uint32_t)1000
-#define BLINK_GPIO (gpio_num_t)4
-
+#define BLINK_GPIO (gpio_num_t)2
 
 #ifdef __cplusplus
 extern "C"
@@ -26,20 +26,26 @@ extern "C"
 #endif
 extern "C" void app_main()
 {
-    gpio_reset_pin(BLINK_GPIO);
-    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
-    gpio_set_level(BLINK_GPIO, 0);
-    printf("Testing Encoder...\n");
-    encoder ky40 (ENCODER_A, ENCODER_B, 20, PCNT_CHANNEL_0, PCNT_UNIT_0);
-    float distancia_rad;
-    while(1)
+    printf("Test GY80.h\n");
+    i2c i2c_module;
+    ESP_ERROR_CHECK(i2c_module.init(DATA_I2C, CLOCK_I2C, FREQ_I2C, I2C_NUM_0));
+
+    printf("i2c module ok\n");
+    GY80 imu_sensor(i2c_module);
+    ESP_ERROR_CHECK(imu_sensor.Init());
+
+    printf("gy80 initialized\n");
+    while (1)
     {
-        ky40.get_dist_angular_rad(&distancia_rad);
-        printf("%f\n", distancia_rad);
-        vTaskDelay(1000/portTICK_PERIOD_MS);
+        printf("Read:\n");
+        imu_sensor.ReadAcc();
+        imu_sensor.ReadGyr();
+        printf("%d\t", imu_sensor.Imu.Acc.X);
+        printf("%d\t", imu_sensor.Imu.Acc.Y);
+        printf("%d\t", imu_sensor.Imu.Acc.Z);
+        printf("%d\t", imu_sensor.Imu.Gyr.X);
+        printf("%d\t", imu_sensor.Imu.Gyr.Y);
+        printf("%d\n", imu_sensor.Imu.Gyr.Z);
     }
-    
-
-    
-
+    vTaskDelay(10/portTICK_PERIOD_MS);
 }

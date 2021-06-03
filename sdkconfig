@@ -1068,6 +1068,12 @@ CONFIG_WPA_MBEDTLS_CRYPTO=y
 # CONFIG_WPA_WPS_WARS is not set
 # CONFIG_WPA_11KV_SUPPORT is not set
 # end of Supplicant
+
+#
+# rosserial
+#
+# CONFIG_ROSSERIAL_OVER_WIFI is not set
+# end of rosserial
 # end of Component config
 
 #

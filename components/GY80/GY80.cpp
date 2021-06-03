@@ -20,25 +20,25 @@ esp_err_t  GY80::I2CWrite(GY_DEVICE_ADDR device_addr,uint8_t reg,uint8_t* buffer
 bool GY80::WaitAccDataReady(){
 	uint8_t rx = 0;
 	I2CRead(ACC_ADDR, GY_ACC_INTSOURCE, &rx, 1);
-		if( (rx&0b10000000) == 0b10000000)
-			return true;
-		return false;
+	if( (rx&0b10000000) == 0b10000000)
+		return true;
+	return false;
 }
 
 bool GY80::WaitGyrDataReady(){
 	uint8_t rx = 0;
 	I2CRead(GYR_ADDR, GY_GYR_STATUS_REG, &rx, 1);
-		if( (rx&0b00001000) == 0b00001000)
-			return true;
-		return false;
+	if( (rx&0b00001000) == 0b00001000)
+		return true;
+	return false;
 }
 
 bool GY80::WaitMagDataReady(){
 	uint8_t rx = 0;
 	I2CRead(MAG_ADDR, GY_MAG_STATUS_REG, &rx, 1);
-		if( (rx&0b00000001) == 0b00000001)
-			return true;
-		return false;
+	if( (rx&0b00000001) == 0b00000001)
+		return true;
+	return false;
 }
 
 GY80::GY80(i2c _i2c_module) {
@@ -52,16 +52,24 @@ bool GY80::Init(){
 	DeviceConnected = false;
 		I2CRead(ACC_ADDR, GY_ACC_WHOAMI, &rx, 1);
 		if(rx != 0b11100101)
-			return false;
+		{
+			printf("ACC %d\n", rx);
+			return ESP_FAIL;
+		}
 
 		I2CRead(GYR_ADDR, GY_GYR_WHOAMI_REG, &rx, 1);
 		if(rx != 0b11010011)
-			return false;
+		{
+			printf("GYR\n");
+			return ESP_FAIL;
+		}
 
 		I2CRead(MAG_ADDR, GY_MAG_WHOAMI_REG, &rx, 1);
 		if(rx != 0b01001000)
-			return false;
-
+		{
+			printf("MAG\n");
+			return ESP_FAIL;
+		}
 		// All devices responded :)
 		uint8_t tx;
 
@@ -88,8 +96,6 @@ bool GY80::Init(){
 		tx = 0b00000000; //HIGH-PASS DISABLED
 		I2CWrite(GYR_ADDR, GY_GYR_CTROL_REG5, &tx,1);
 
-
-
 		/*Magnetometer Configuration*/
 		tx = 0b00000000; //no avg, no measruement bias
 		I2CWrite(MAG_ADDR, GY_MAG_CONFIG_A_REG, &tx, 1);
@@ -102,7 +108,7 @@ bool GY80::Init(){
 		/*READY! */
 		DeviceConnected = true;
 
-		return true;
+		return ESP_OK;
 }
 
 /* IMPORTANTE --> Alinhamento dos eixos eh feito na hora da leitura! */
@@ -112,7 +118,7 @@ bool GY80::Init(){
 
 
 void GY80::ReadAcc(){
-	while(WaitAccDataReady() == false);
+	// while(WaitAccDataReady() == false);
 	uint8_t buffer[6]; //6 data bytes
 	I2CRead(ACC_ADDR, GY_ACC_DATAREG, buffer, 6);
 	Imu.Acc.Z = (int16_t) ((buffer[1] << 8) | buffer[0]);
@@ -121,7 +127,7 @@ void GY80::ReadAcc(){
 }
 
 void GY80::ReadGyr(){
-	while(WaitGyrDataReady() == false);
+	// while(WaitGyrDataReady() == false);
 	uint8_t buffer[6]; //6 data bytes
 	I2CRead(GYR_ADDR, GY_GYR_DATA_REG, buffer, 6);
 //	GY_I2C_READ(GY_DEVICE_GYRO, 0x29, &buffer[1], 1);
