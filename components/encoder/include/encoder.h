@@ -18,17 +18,15 @@ private:
     uint8_t pin_a;
     uint8_t pin_b;
     pcnt_unit_t unit;
-
-public:
     uint16_t pulse_per_rev;
     pcnt_config_t enc;
 
-    encoder(uint8_t _pin_a, uint8_t _pin_b, uint16_t _pulse_rev, pcnt_channel_t channel, pcnt_unit_t unit );
+public:
+    encoder();
     ~encoder();
-    esp_err_t get_dist_angular_rad(float *rad);
+    esp_err_t init(uint8_t _pin_a, uint8_t _pin_b, uint16_t _pulse_rev, pcnt_channel_t channel, pcnt_unit_t unit);
+    esp_err_t getDistAngularRad(float *rad);
 };
-
-
 #endif
 
 

@@ -7,11 +7,8 @@
 
 #ifndef i2c_H_
 #define i2c_H_
-#endif
 
 #include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "driver/i2c.h"
 #include "esp_attr.h"
 
@@ -32,3 +29,4 @@ class i2c
         esp_err_t write(uint8_t adress, uint8_t regist, uint8_t *data, size_t size);
         esp_err_t read(uint8_t address, uint8_t regist, uint8_t *data, size_t size);
 };
+#endif

@@ -39,8 +39,7 @@ esp_err_t motorDC::init(mcpwm_unit_t _mcpwm_num, mcpwm_io_signals_t io_signal_A,
     pwm_config.cmpr_b = 0;
     pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
     pwm_config.counter_mode = MCPWM_UP_COUNTER;
-    mcpwm_init(mcpwm_num, timer_num, &pwm_config);
-    return ESP_OK;
+    return mcpwm_init(mcpwm_num, timer_num, &pwm_config);
 }
 
 esp_err_t motorDC::setMaxVelocity(float vel)
