@@ -23,7 +23,7 @@ private:
     
 public:
     odometry();
-    void init(encoder _left_enc, encoder _right_enc);
+    void init(encoder _left_enc, encoder _right_enc, float _wheel_radius, float _wheels_distance);
     Ivector3 getPosition();
     ~odometry();    
 };

@@ -115,7 +115,7 @@ void initOdometry()
 {
     left_encoder.init(ENC_LEFT_PIN_A, ENC_LEFT_PIN_B, ENC_LEFT_PULSE_REV, PCNT_CHANNEL_0, PCNT_UNIT_0);
     right_encoder.init(ENC_RIGHT_PIN_A, ENC_RIGHT_PIN_B, ENC_RIGHT_PULSE_REV, PCNT_CHANNEL_1, PCNT_UNIT_1);
-    position.init(left_encoder, right_encoder);
+    position.init(left_encoder, right_encoder, ACA_WHEEL_RADIUS, ACA_WHEEL_DISTANCE);
 }
 
 

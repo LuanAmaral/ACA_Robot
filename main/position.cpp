@@ -6,10 +6,12 @@ odometry::odometry()
 {
 }
 
-void odometry::init(encoder _left_enc, encoder _right_enc)
+void odometry::init(encoder _left_enc, encoder _right_enc, float _wheel_radius, float _wheels_distance)
 {
     left_enc  = _left_enc;
     right_enc = _right_enc;
+    wheel_radius = _wheel_radius;
+    wheel_length = _wheels_distance;
 }
 
 Ivector3 odometry::getPosition()
