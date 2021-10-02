@@ -16,7 +16,7 @@ struct Ivector3 {
 class odometry
 {
 private:
-    Ivector3 _position{.x=0, .y=0, .phi=0};
+    Ivector3 position{.x=0, .y=0, .phi=0};
     float wheel_radius = ACA_WHEEL_RADIUS;
     float wheel_length = ACA_WHEEL_DISTANCE;
     encoder left_enc, right_enc;

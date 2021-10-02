@@ -24,11 +24,11 @@ Ivector3 odometry::getPosition()
     float linear_dist = wheel_radius * (left_dist_ang + right_dist_ang) / 2;
     float delta_phi = wheel_radius * (right_dist_ang - left_dist_ang) / (2*wheel_length);
 
-    _position.x = _position.x + linear_dist * cos(_position.phi + delta_phi/2);
-    _position.y = _position.y + linear_dist * sin(_position.phi + delta_phi/2);
-    _position.phi = _position.phi + delta_phi;
+    position.x = position.x + linear_dist * cos(position.phi + delta_phi/2);
+    position.y = position.y + linear_dist * sin(position.phi + delta_phi/2);
+    position.phi = position.phi + delta_phi;
 
-    return _position;
+    return position;
 }
 
 odometry::~odometry()
